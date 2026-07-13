@@ -31,14 +31,10 @@ export default function CostOfInaction({ initialData = null }) {
     let cumulativeShortfall = 0;
 
     for (let year = 1; year <= 3; year++) {
-      // BEE regulatory target line gradually tightens linearly to the final target
       const yearTargetSec = currentSec - (currentSec - targetSec) * (year / 3.0);
-      
-      // Calculate annual shortfall in toe (tonnes of oil equivalent)
       const annualShortfall = Math.max(0, currentSec - yearTargetSec) * annualProduction;
       cumulativeShortfall += annualShortfall;
 
-      // Variable component of penalty
       const variablePenalty = cumulativeShortfall * escertPrice;
       const totalPenaltyInr = fixedPenalty + variablePenalty;
       const totalPenaltyLakh = totalPenaltyInr / 100000.0;
@@ -56,38 +52,44 @@ export default function CostOfInaction({ initialData = null }) {
     setForecastData(calculatedForecast);
   }, [currentSec, targetSec, annualProduction, escertPrice, fixedPenalty, initialData]);
 
-  // Format monetary value
   const formatLakh = (value) => {
     return `${value} Lakh INR`;
   };
 
   return (
-    <div className="bg-slate-900 border border-slate-800 rounded-xl p-6 text-slate-100 shadow-xl max-w-5xl mx-auto my-6">
+    <div className="bg-[#1E2022] border border-[#303337] rounded-lg p-5 text-[#E2E8F0] shadow-xl relative overflow-hidden">
+      
+      {/* Corner Rivet Details */}
+      <div className="absolute top-2 left-2 w-1.5 h-1.5 rounded-full bg-[#303337]"></div>
+      <div className="absolute top-2 right-2 w-1.5 h-1.5 rounded-full bg-[#303337]"></div>
+      <div className="absolute bottom-2 left-2 w-1.5 h-1.5 rounded-full bg-[#303337]"></div>
+      <div className="absolute bottom-2 right-2 w-1.5 h-1.5 rounded-full bg-[#303337]"></div>
+
       {/* Header */}
-      <div className="mb-6 border-b border-slate-800 pb-4">
-        <h2 className="text-2xl font-bold tracking-tight text-white flex items-center gap-2">
-          <span className="w-2.5 h-6 bg-red-500 rounded-full inline-block"></span>
-          Cost-of-Inaction Forecast (PAT Cycle)
+      <div className="mb-5 border-b border-[#303337] pb-3">
+        <h2 className="text-sm font-bold tracking-wider text-white uppercase flex items-center gap-2">
+          <span className="w-1.5 h-4 bg-[#DC2626] inline-block"></span>
+          PAT CYCLE COST-OF-INACTION FORECAST (3-YEAR TIMELINE)
         </h2>
-        <p className="text-slate-400 text-sm mt-1">
-          BEE Compliance risk projection mapping energy intensity trends and statutory financial penalties.
+        <p className="text-slate-400 text-[10px] font-mono-inst mt-0.5">
+          BEE REGULATORY COMPLIANCE TARGET TRACKING / PENALTY RISK
         </p>
       </div>
 
       {/* Grid Layout: Controls & Chart */}
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
         
         {/* Controls Column */}
-        <div className="bg-slate-950/60 border border-slate-800/80 rounded-lg p-5 space-y-5">
-          <h3 className="text-sm font-semibold tracking-wider uppercase text-slate-400 mb-3 border-b border-slate-800/50 pb-1">
-            Plant Assumptions
+        <div className="bg-[#121314] border border-[#303337] rounded p-4 space-y-4">
+          <h3 className="text-[10px] font-bold tracking-wider uppercase text-slate-400 border-b border-[#303337] pb-1 mb-2">
+            SIMULATION ADJUSTMENTS
           </h3>
 
           {/* Current SEC */}
           <div>
-            <div className="flex justify-between text-xs mb-1">
+            <div className="flex justify-between text-[11px] mb-1 font-mono-inst">
               <span className="text-slate-400">Current Plant SEC (toe/unit)</span>
-              <span className="text-red-400 font-semibold">{currentSec.toFixed(3)}</span>
+              <span className="text-red-500 font-bold">{currentSec.toFixed(3)}</span>
             </div>
             <input
               type="range"
@@ -96,15 +98,15 @@ export default function CostOfInaction({ initialData = null }) {
               step="0.05"
               value={currentSec}
               onChange={(e) => setCurrentSec(parseFloat(e.target.value))}
-              className="w-full h-1.5 bg-slate-800 rounded-lg appearance-none cursor-pointer accent-red-500"
+              className="w-full h-1 bg-[#1E2022] rounded appearance-none cursor-pointer accent-[#DC2626]"
             />
           </div>
 
           {/* Target SEC */}
           <div>
-            <div className="flex justify-between text-xs mb-1">
+            <div className="flex justify-between text-[11px] mb-1 font-mono-inst">
               <span className="text-slate-400">BEE Target SEC (toe/unit)</span>
-              <span className="text-emerald-400 font-semibold">{targetSec.toFixed(3)}</span>
+              <span className="text-emerald-400 font-bold">{targetSec.toFixed(3)}</span>
             </div>
             <input
               type="range"
@@ -113,123 +115,123 @@ export default function CostOfInaction({ initialData = null }) {
               step="0.05"
               value={targetSec}
               onChange={(e) => setTargetSec(parseFloat(e.target.value))}
-              className="w-full h-1.5 bg-slate-800 rounded-lg appearance-none cursor-pointer accent-emerald-500"
+              className="w-full h-1 bg-[#1E2022] rounded appearance-none cursor-pointer accent-[#2563EB]"
             />
-            {targetSec >= currentSec && (
-              <p className="text-[10px] text-yellow-500 mt-1">Target SEC must be lower than Current SEC to simulate penalty risk.</p>
-            )}
           </div>
 
           {/* Annual Production */}
           <div>
-            <label className="block text-xs text-slate-400 mb-1">Annual Production Output (units)</label>
+            <label className="block text-[10px] text-slate-400 uppercase tracking-wider font-mono-inst mb-1">
+              Production Output (units)
+            </label>
             <input
               type="number"
               value={annualProduction}
               onChange={(e) => setAnnualProduction(Math.max(1, parseInt(e.target.value) || 0))}
-              className="w-full bg-slate-900 border border-slate-800 rounded px-3 py-1.5 text-sm text-white focus:outline-none focus:border-red-500"
+              className="w-full bg-[#1A1C1E] border border-[#303337] rounded px-2.5 py-1 text-xs text-white focus:outline-none focus:border-[#DC2626] font-mono"
             />
           </div>
 
-          {/* ESCert Certificate Price */}
+          {/* ESCert price */}
           <div>
-            <label className="block text-xs text-slate-400 mb-1">BEE ESCert Price (INR/Certificate)</label>
+            <label className="block text-[10px] text-slate-400 uppercase tracking-wider font-mono-inst mb-1">
+              ESCert Price (INR/Cert)
+            </label>
             <input
               type="number"
               value={escertPrice}
               onChange={(e) => setEscertPrice(Math.max(0, parseInt(e.target.value) || 0))}
-              className="w-full bg-slate-900 border border-slate-800 rounded px-3 py-1.5 text-sm text-white focus:outline-none focus:border-red-500"
+              className="w-full bg-[#1A1C1E] border border-[#303337] rounded px-2.5 py-1 text-xs text-white focus:outline-none focus:border-[#DC2626] font-mono"
             />
-            <p className="text-[10px] text-slate-500 mt-1">Statutory floor price is 1,840 INR per certificate.</p>
           </div>
 
-          {/* Fixed Penalty Component */}
+          {/* Fixed Penalty */}
           <div>
-            <label className="block text-xs text-slate-400 mb-1">Fixed Penalty Component (INR)</label>
+            <label className="block text-[10px] text-slate-400 uppercase tracking-wider font-mono-inst mb-1">
+              Section 26 Fixed Penalty (INR)
+            </label>
             <input
               type="number"
               value={fixedPenalty}
               onChange={(e) => setFixedPenalty(Math.max(0, parseInt(e.target.value) || 0))}
-              className="w-full bg-slate-900 border border-slate-800 rounded px-3 py-1.5 text-sm text-white focus:outline-none focus:border-red-500"
+              className="w-full bg-[#1A1C1E] border border-[#303337] rounded px-2.5 py-1 text-xs text-slate-300 focus:outline-none focus:border-[#DC2626] font-mono"
             />
-            <p className="text-[10px] text-slate-500 mt-1">Fixed penalty under Section 26 is 10 Lakh INR.</p>
           </div>
 
-          {/* Compliance Risk Summary Card */}
           {forecastData.length > 0 && (
-            <div className="bg-red-950/30 border border-red-900/40 rounded p-3 text-center">
-              <span className="text-[10px] uppercase tracking-wider text-red-400">Total Penalty Exposure (Year 3)</span>
-              <p className="text-xl font-bold text-red-500 mt-1">
-                {forecastData[2].penaltyLakh.toFixed(2)} Lakh INR
+            <div className="bg-[#2C1D1E] border border-[#DC2626]/30 rounded p-3 text-center">
+              <span className="text-[9px] uppercase tracking-wider text-[#DC2626] font-bold">PENALTY AT CYCLE TERMINAL</span>
+              <p className="text-lg font-bold text-[#DC2626] font-mono mt-0.5">
+                {forecastData[2].penaltyLakh.toFixed(2)} Lakh
               </p>
             </div>
           )}
         </div>
 
         {/* Visualizations Column */}
-        <div className="lg:col-span-2 space-y-6">
+        <div className="lg:col-span-2 space-y-5">
           
-          {/* Legend and stats */}
-          <div className="grid grid-cols-3 gap-4">
-            <div className="bg-slate-950/40 border border-slate-800 p-3 rounded">
-              <span className="text-[10px] text-slate-400 block uppercase font-medium">Unmitigated SEC</span>
-              <span className="text-lg font-semibold text-red-400 mt-0.5 block">{currentSec.toFixed(3)} toe</span>
+          {/* Status metrics grid */}
+          <div className="grid grid-cols-3 gap-3">
+            <div className="bg-[#121314] border border-[#303337] p-2.5 rounded text-center">
+              <span className="text-[9px] text-slate-500 block uppercase font-mono-inst">Baseline SEC</span>
+              <span className="text-sm font-bold text-red-500 font-mono mt-0.5 block">{currentSec.toFixed(3)} toe</span>
             </div>
-            <div className="bg-slate-950/40 border border-slate-800 p-3 rounded">
-              <span className="text-[10px] text-slate-400 block uppercase font-medium">Target SEC Norm</span>
-              <span className="text-lg font-semibold text-emerald-400 mt-0.5 block">{targetSec.toFixed(3)} toe</span>
+            <div className="bg-[#121314] border border-[#303337] p-2.5 rounded text-center">
+              <span className="text-[9px] text-slate-500 block uppercase font-mono-inst">Target Norm</span>
+              <span className="text-sm font-bold text-emerald-400 font-mono mt-0.5 block">{targetSec.toFixed(3)} toe</span>
             </div>
-            <div className="bg-slate-950/40 border border-slate-800 p-3 rounded">
-              <span className="text-[10px] text-slate-400 block uppercase font-medium">3-Yr Shortfall</span>
-              <span className="text-lg font-semibold text-yellow-500 mt-0.5 block">
-                {forecastData.length > 0 ? `${forecastData[2].cumulativeShortfallToe.toLocaleString()} toe` : '0 toe'}
+            <div className="bg-[#121314] border border-[#303337] p-2.5 rounded text-center">
+              <span className="text-[9px] text-slate-500 block uppercase font-mono-inst">Shortfall Sum</span>
+              <span className="text-sm font-bold text-amber-500 font-mono mt-0.5 block">
+                {forecastData.length > 0 ? `${Math.round(forecastData[2].cumulativeShortfallToe).toLocaleString()} toe` : '0 toe'}
               </span>
             </div>
           </div>
 
-          {/* Recharts Area */}
-          <div className="h-72 w-full bg-slate-950/30 border border-slate-800 rounded-lg p-4">
+          {/* Recharts chart area */}
+          <div className="h-64 w-full bg-[#121314] border border-[#303337] rounded p-3">
             <ResponsiveContainer width="100%" height="100%">
-              <LineChart data={forecastData} margin={{ top: 10, right: 30, left: 10, bottom: 5 }}>
-                <CartesianGrid strokeDasharray="3 3" stroke="#1e293b" />
-                <XAxis dataKey="year" stroke="#94a3b8" fontSize={11} />
-                <YAxis yAxisId="left" stroke="#ef4444" fontSize={11} label={{ value: 'SEC (toe/unit)', angle: -90, position: 'insideLeft', style: { fill: '#94a3b8' } }} domain={['auto', 'auto']} />
-                <YAxis yAxisId="right" orientation="right" stroke="#eab308" fontSize={11} label={{ value: 'Penalty (Lakh INR)', angle: 90, position: 'insideRight', style: { fill: '#94a3b8' } }} />
+              <LineChart data={forecastData} margin={{ top: 10, right: 20, left: -10, bottom: 0 }}>
+                <CartesianGrid strokeDasharray="3 3" stroke="#25272a" />
+                <XAxis dataKey="year" stroke="#94a3b8" fontSize={10} tickLine={false} />
+                <YAxis yAxisId="left" stroke="#ef4444" fontSize={10} tickLine={false} />
+                <YAxis yAxisId="right" orientation="right" stroke="#eab308" fontSize={10} tickLine={false} />
                 <Tooltip 
-                  contentStyle={{ backgroundColor: '#0f172a', borderColor: '#334155', color: '#f8fafc' }}
+                  contentStyle={{ backgroundColor: '#1E2022', borderColor: '#303337', color: '#E2E8F0', fontSize: 11 }}
                   formatter={(value, name) => {
-                    if (name === "penaltyLakh") return [formatLakh(value), "Cumulative Penalty"];
-                    return [value, name === "baselineSec" ? "Projected SEC" : "BEE Target Line"];
+                    if (name === "penaltyLakh") return [formatLakh(value), "Penalty Exposure"];
+                    return [value, name === "baselineSec" ? "SEC Projection" : "BEE Target Line"];
                   }}
                 />
-                <Legend verticalAlign="top" height={36} wrapperStyle={{ fontSize: '11px' }} />
-                <Line yAxisId="left" type="monotone" dataKey="baselineSec" stroke="#ef4444" strokeWidth={2.5} name="Projected Baseline SEC" activeDot={{ r: 6 }} />
-                <Line yAxisId="left" type="monotone" dataKey="targetSec" stroke="#10b981" strokeWidth={2.5} name="BEE Regulatory Target Line" strokeDasharray="5 5" />
-                <Line yAxisId="right" type="monotone" dataKey="penaltyLakh" stroke="#eab308" strokeWidth={3} name="Cumulative Financial Penalty" />
+                <Legend verticalAlign="top" height={28} wrapperStyle={{ fontSize: '10px' }} />
+                <Line yAxisId="left" type="monotone" dataKey="baselineSec" stroke="#DC2626" strokeWidth={2} name="SEC Projected" dot={true} />
+                <Line yAxisId="left" type="monotone" dataKey="targetSec" stroke="#10b981" strokeWidth={2} name="BEE Target" strokeDasharray="5 5" />
+                <Line yAxisId="right" type="monotone" dataKey="penaltyLakh" stroke="#D97706" strokeWidth={2.5} name="Total Penalty" />
               </LineChart>
             </ResponsiveContainer>
           </div>
 
-          {/* Numerical Table View */}
-          <div className="overflow-x-auto">
-            <table className="w-full text-left text-xs text-slate-300">
-              <thead className="bg-slate-950 text-slate-400 uppercase tracking-wider text-[10px]">
+          {/* Control Room Table */}
+          <div className="overflow-x-auto border border-[#303337] rounded">
+            <table className="w-full text-left text-[11px] text-slate-300 font-mono">
+              <thead className="bg-[#121314] text-slate-400 uppercase text-[9px] tracking-wider border-b border-[#303337]">
                 <tr>
-                  <th className="px-4 py-2 border border-slate-800">Timeline</th>
-                  <th className="px-4 py-2 border border-slate-800">Baseline SEC (toe/unit)</th>
-                  <th className="px-4 py-2 border border-slate-800">Target SEC Line (toe/unit)</th>
-                  <th className="px-4 py-2 border border-slate-800">Annual Shortfall</th>
-                  <th className="px-4 py-2 border border-slate-800">Cumulative Penalty</th>
+                  <th className="px-3 py-2 border-r border-[#303337]">COMPLIANCE TIMELINE</th>
+                  <th className="px-3 py-2 border-r border-[#303337]">BASELINE SEC</th>
+                  <th className="px-3 py-2 border-r border-[#303337]">TARGET SEC LINE</th>
+                  <th className="px-3 py-2 border-r border-[#303337]">ANNUAL SHORTFALL</th>
+                  <th className="px-3 py-2">CUMULATIVE PENALTY</th>
                 </tr>
               </thead>
               <tbody>
                 {forecastData.map((row, idx) => (
-                  <tr key={idx} className="border-b border-slate-800/80 hover:bg-slate-950/20">
-                    <td className="px-4 py-2.5 font-medium text-white">{row.year}</td>
-                    <td className="px-4 py-2.5">{row.baselineSec.toFixed(3)}</td>
-                    <td className="px-4 py-2.5 text-emerald-400">{row.targetSec.toFixed(3)}</td>
-                    <td className="px-4 py-2.5 text-yellow-500">{row.annualShortfallToe.toLocaleString()} toe</td>
-                    <td className="px-4 py-2.5 font-semibold text-red-400">{formatLakh(row.penaltyLakh)}</td>
+                  <tr key={idx} className="border-b border-[#303337] hover:bg-[#121314]/30">
+                    <td className="px-3 py-2 border-r border-[#303337] font-medium text-white">{row.year}</td>
+                    <td className="px-3 py-2 border-r border-[#303337]">{row.baselineSec.toFixed(3)}</td>
+                    <td className="px-3 py-2 border-r border-[#303337] text-emerald-400">{row.targetSec.toFixed(3)}</td>
+                    <td className="px-3 py-2 border-r border-[#303337] text-amber-500">{row.annualShortfallToe.toLocaleString()} toe</td>
+                    <td className="px-3 py-2 font-bold text-red-500">{formatLakh(row.penaltyLakh)}</td>
                   </tr>
                 ))}
               </tbody>

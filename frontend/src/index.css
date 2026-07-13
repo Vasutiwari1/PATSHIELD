@@ -2,9 +2,29 @@
 @tailwind components;
 @tailwind utilities;
 
-body {
-  margin: 0;
-  font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
-  background-color: #020617;
-  color: #f8fafc;
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  body {
+    margin: 0;
+    font-family: 'Space Grotesk', system-ui, sans-serif;
+    background-color: #121314;
+    color: #E2E8F0;
+  }
 }
+
+/* Custom pattern for cross-hatching */
+.bg-crosshatch {
+  background-image: repeating-linear-gradient(45deg, rgba(220, 38, 38, 0.15) 0px, rgba(220, 38, 38, 0.15) 2px, transparent 2px, transparent 8px);
+}
+.bg-crosshatch-yellow {
+  background-image: repeating-linear-gradient(45deg, rgba(217, 119, 6, 0.15) 0px, rgba(217, 119, 6, 0.15) 2px, transparent 2px, transparent 8px);
+}
+
+/* LED or retro segment styles */
+.font-mono-inst {
+  font-family: 'JetBrains Mono', monospace;
+}
+

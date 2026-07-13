@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 
 export default function TechSizing() {
-  // Input parameters
+  // Input parameters (FIELD DEVICES SIMULATED)
   const [temperature, setTemperature] = useState(250);
   const [massFlowRate, setMassFlowRate] = useState(15.0);
   const [sulfurContent, setSulfurContent] = useState(0.2);
@@ -152,66 +152,68 @@ export default function TechSizing() {
     setTechResults(results);
   }, [temperature, massFlowRate, sulfurContent, footprintAvailable]);
 
-  // Format currency in Lakhs
   const formatLakhs = (val) => {
     return `${(val / 100000.0).toFixed(2)} Lakh INR`;
   };
 
   return (
-    <div className="bg-slate-900 border border-slate-800 rounded-xl p-6 text-slate-100 shadow-xl max-w-5xl mx-auto my-6">
+    <div className="bg-[#1E2022] border border-[#303337] rounded-lg p-5 text-[#E2E8F0] shadow-xl relative overflow-hidden">
       
+      {/* Corner Rivets */}
+      <div className="absolute top-2 left-2 w-1.5 h-1.5 rounded-full bg-[#303337]"></div>
+      <div className="absolute top-2 right-2 w-1.5 h-1.5 rounded-full bg-[#303337]"></div>
+      <div className="absolute bottom-2 left-2 w-1.5 h-1.5 rounded-full bg-[#303337]"></div>
+      <div className="absolute bottom-2 right-2 w-1.5 h-1.5 rounded-full bg-[#303337]"></div>
+
       {/* Header */}
-      <div className="mb-6 border-b border-slate-800 pb-4">
-        <h2 className="text-2xl font-bold tracking-tight text-white flex items-center gap-2">
-          <span className="w-2.5 h-6 bg-emerald-500 rounded-full inline-block"></span>
-          WHR Technology Feasibility & Sizing Engine
+      <div className="mb-5 border-b border-[#303337] pb-3">
+        <h2 className="text-sm font-bold tracking-wider text-white uppercase flex items-center gap-2">
+          <span className="w-1.5 h-4 bg-[#DC2626] inline-block"></span>
+          WHR COPROCESSOR FEASIBILITY & SIZING ENGINE
         </h2>
-        <p className="text-slate-400 text-sm mt-1">
-          Perform thermodynamic sizing calculations and side-by-side technology comparisons.
+        <p className="text-[#94A3B8] text-[10px] font-mono-inst mt-0.5">
+          STAGE-BY-STAGE HEAT TRANSFER MATRIX & CORROSION PREVENTION CODES
         </p>
       </div>
 
-      {/* Metallurgy Alert Banner (Section 3.3) */}
-      <div className="mb-6">
+      {/* Metallurgy Alert Banner (Section 3.3 / Stage 4 Warning) */}
+      <div className="mb-5">
         {isHighSulfur ? (
-          <div className="bg-amber-950/40 border border-amber-800/80 rounded-lg p-4 text-amber-300 flex items-start gap-3">
-            <span className="text-2xl">⚠️</span>
-            <div>
-              <h4 className="font-bold text-amber-200">Corrosion Protection Active</h4>
-              <p className="text-xs mt-0.5">
-                Flue gas sulfur content exceeds 0.5% (Current: {sulfurContent}%). Recommending{" "}
-                <span className="font-bold text-white underline decoration-amber-400">{metallurgyType}</span> to prevent acid dew-point corrosion during condensation.
-              </p>
-            </div>
+          <div className="bg-crosshatch border-2 border-[#DC2626] rounded p-4 text-center">
+            <h4 className="text-xs font-black text-red-500 uppercase tracking-widest mb-1">
+              ☣️ ACID DEW-POINT CORROSION WARNING
+            </h4>
+            <p className="text-xs font-bold text-white uppercase">
+              MANDATORY STAINLESS STEEL (SS316) SPECIFICATION REQUIRED
+            </p>
+            <p className="text-[10px] text-slate-400 mt-1 max-w-lg mx-auto leading-relaxed">
+              Exhaust stream sulfur levels exceed 0.5% (Current: {sulfurContent}%). Acid condensations at boundary temperatures will destroy carbon steel tubes.
+            </p>
           </div>
         ) : (
-          <div className="bg-slate-950/60 border border-slate-800 rounded-lg p-4 text-slate-300 flex items-start gap-3">
-            <span className="text-xl">✅</span>
-            <div>
-              <h4 className="font-semibold text-slate-200">Standard Material Design</h4>
-              <p className="text-xs mt-0.5">
-                Flue gas sulfur content is within safe limits (Current: {sulfurContent}%). Recommending{" "}
-                <span className="font-bold text-emerald-400">{metallurgyType}</span> for standard operational integrity.
-              </p>
-            </div>
+          <div className="bg-[#121314] border border-[#303337] rounded p-3 text-slate-300 flex items-center gap-2.5">
+            <span className="text-emerald-400 font-bold font-mono">STATUS:</span>
+            <span className="text-xs font-semibold text-slate-200">
+              {metallurgyType} - Design parameters conform to standard structural steel limit thresholds.
+            </span>
           </div>
         )}
       </div>
 
       {/* Grid Layout: Inputs Left, Comparison Right */}
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
         
         {/* Controls Column */}
-        <div className="bg-slate-950/60 border border-slate-800/80 rounded-lg p-5 space-y-5 h-fit">
-          <h3 className="text-sm font-semibold tracking-wider uppercase text-slate-400 border-b border-slate-800/50 pb-1">
-            Exhaust Stream Inputs
+        <div className="bg-[#121314] border border-[#303337] rounded p-4 space-y-4 h-fit">
+          <h3 className="text-[10px] font-bold tracking-wider uppercase text-slate-400 border-b border-[#303337] pb-1">
+            LOCAL EXHAUST TELEMETRY
           </h3>
 
           {/* Waste Gas Temperature */}
           <div>
-            <div className="flex justify-between text-xs mb-1">
-              <span className="text-slate-400">Gas Temperature</span>
-              <span className="text-white font-semibold">{temperature} °C</span>
+            <div className="flex justify-between text-[11px] mb-1 font-mono-inst">
+              <span className="text-slate-400">Gas Inlet Temperature</span>
+              <span className="text-white font-bold">{temperature} °C</span>
             </div>
             <input
               type="range"
@@ -220,20 +222,20 @@ export default function TechSizing() {
               step="10"
               value={temperature}
               onChange={(e) => setTemperature(parseInt(e.target.value))}
-              className="w-full h-1.5 bg-slate-800 rounded-lg appearance-none cursor-pointer accent-emerald-500"
+              className="w-full h-1 bg-[#1E2022] rounded appearance-none cursor-pointer accent-[#DC2626]"
             />
-            <div className="flex justify-between text-[10px] text-slate-500 mt-1">
-              <span>90-150°C (ORC)</span>
-              <span>200-350°C (Econ)</span>
-              <span>400-800°C (WHRB)</span>
+            <div className="flex justify-between text-[9px] text-slate-550 mt-1 font-mono">
+              <span>90°C (ORC)</span>
+              <span>200°C (Econ)</span>
+              <span>400°C (WHRB)</span>
             </div>
           </div>
 
           {/* Mass Flow Rate */}
           <div>
-            <div className="flex justify-between text-xs mb-1">
-              <span className="text-slate-400">Mass Flow Rate</span>
-              <span className="text-white font-semibold">{massFlowRate} kg/s</span>
+            <div className="flex justify-between text-[11px] mb-1 font-mono-inst">
+              <span className="text-slate-400">Gas Mass Flow</span>
+              <span className="text-white font-bold">{massFlowRate} kg/s</span>
             </div>
             <input
               type="range"
@@ -242,15 +244,15 @@ export default function TechSizing() {
               step="0.5"
               value={massFlowRate}
               onChange={(e) => setMassFlowRate(parseFloat(e.target.value))}
-              className="w-full h-1.5 bg-slate-800 rounded-lg appearance-none cursor-pointer accent-emerald-500"
+              className="w-full h-1 bg-[#1E2022] rounded appearance-none cursor-pointer accent-[#D97706]"
             />
           </div>
 
           {/* Sulfur Content */}
           <div>
-            <div className="flex justify-between text-xs mb-1">
-              <span className="text-slate-400">Sulfur Content</span>
-              <span className={`font-semibold ${isHighSulfur ? 'text-amber-400' : 'text-slate-300'}`}>
+            <div className="flex justify-between text-[11px] mb-1 font-mono-inst">
+              <span className="text-slate-400">Gas Sulfur Content</span>
+              <span className={`font-bold ${isHighSulfur ? 'text-red-500' : 'text-slate-300'}`}>
                 {sulfurContent.toFixed(2)} %
               </span>
             </div>
@@ -261,16 +263,15 @@ export default function TechSizing() {
               step="0.05"
               value={sulfurContent}
               onChange={(e) => setSulfurContent(parseFloat(e.target.value))}
-              className="w-full h-1.5 bg-slate-800 rounded-lg appearance-none cursor-pointer accent-emerald-500"
+              className="w-full h-1 bg-[#1E2022] rounded appearance-none cursor-pointer accent-[#D97706]"
             />
-            <p className="text-[10px] text-slate-500 mt-1">Limit is 0.5% for standard carbon steel.</p>
           </div>
 
           {/* Footprint Available */}
           <div>
-            <div className="flex justify-between text-xs mb-1">
-              <span className="text-slate-400">Available Footprint Area</span>
-              <span className="text-white font-semibold">{footprintAvailable} sqm</span>
+            <div className="flex justify-between text-[11px] mb-1 font-mono-inst">
+              <span className="text-slate-400">Available Space Area</span>
+              <span className="text-white font-bold">{footprintAvailable} sqm</span>
             </div>
             <input
               type="range"
@@ -279,50 +280,49 @@ export default function TechSizing() {
               step="5"
               value={footprintAvailable}
               onChange={(e) => setFootprintAvailable(parseInt(e.target.value))}
-              className="w-full h-1.5 bg-slate-800 rounded-lg appearance-none cursor-pointer accent-emerald-500"
+              className="w-full h-1 bg-[#1E2022] rounded appearance-none cursor-pointer accent-[#2563EB]"
             />
           </div>
 
         </div>
 
         {/* Side-by-Side Comparison Panels */}
-        <div className="lg:col-span-2 space-y-6">
+        <div className="lg:col-span-2 space-y-5">
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
             
             {techResults.map((tech) => {
               const borderClass = tech.isViable 
-                ? "border-emerald-800/80 bg-emerald-950/10" 
-                : "border-slate-800 bg-slate-950/30 opacity-60";
+                ? "border-[#303337] bg-[#121314]" 
+                : "border-[#303337] bg-[#121314] opacity-40";
 
               return (
                 <div 
                   key={tech.key} 
-                  className={`border rounded-lg p-4 flex flex-col justify-between transition-all ${borderClass}`}
+                  className={`border rounded p-4 flex flex-col justify-between transition-all relative ${borderClass}`}
                 >
                   <div>
-                    {/* Badge */}
-                    <div className="flex justify-between items-center mb-2">
-                      <span className="text-[10px] font-bold tracking-wider uppercase text-slate-400">
+                    <div className="flex justify-between items-center mb-3">
+                      <span className="text-[9px] font-bold font-mono tracking-wider text-slate-400">
                         {tech.key}
                       </span>
                       {tech.isViable ? (
-                        <span className="bg-emerald-900/40 text-emerald-400 border border-emerald-800/50 text-[9px] font-bold px-1.5 py-0.5 rounded">
-                          Recommended
+                        <span className="text-[#10B981] border border-[#10B981]/30 bg-[#10B981]/5 text-[8px] font-bold px-1.5 py-0.5 rounded uppercase font-mono">
+                          ACTIVE
                         </span>
                       ) : (
-                        <span className="bg-slate-900 text-slate-500 border border-slate-800 text-[9px] px-1.5 py-0.5 rounded">
-                          Infeasible
+                        <span className="text-slate-600 border border-[#303337] bg-transparent text-[8px] px-1.5 py-0.5 rounded uppercase font-mono">
+                          INACTIVE
                         </span>
                       )}
                     </div>
 
-                    <h3 className="text-sm font-bold text-white leading-tight mb-4 min-h-[40px]">
+                    <h3 className="text-xs font-bold text-white tracking-tight leading-tight mb-4 min-h-[32px]">
                       {tech.name}
                     </h3>
 
                     {/* Sizing Outputs Panel */}
-                    <div className="space-y-2 border-t border-slate-800/80 pt-3 text-xs mb-4">
-                      <h4 className="text-[9px] uppercase tracking-wider text-slate-400 font-semibold mb-1">
+                    <div className="space-y-1.5 border-t border-[#303337] pt-3 text-[11px] font-mono mb-4">
+                      <h4 className="text-[8px] uppercase tracking-wider text-slate-500 font-bold mb-1">
                         Sizing Parameters
                       </h4>
                       <div className="flex justify-between">
@@ -343,15 +343,15 @@ export default function TechSizing() {
                       </div>
                       <div className="flex justify-between">
                         <span className="text-slate-500">Footprint Fit</span>
-                        <span className={`font-semibold ${tech.footprintFeasible ? 'text-emerald-400' : 'text-red-400'}`}>
+                        <span className={`font-semibold ${tech.footprintFeasible ? 'text-emerald-400' : 'text-red-500'}`}>
                           {tech.footprintFeasible ? 'Feasible' : 'Exceeded'}
                         </span>
                       </div>
                     </div>
 
                     {/* Financial Dashboard Panel */}
-                    <div className="space-y-2 border-t border-slate-800/80 pt-3 text-xs">
-                      <h4 className="text-[9px] uppercase tracking-wider text-slate-400 font-semibold mb-1">
+                    <div className="space-y-1.5 border-t border-[#303337] pt-3 text-[11px] font-mono">
+                      <h4 className="text-[8px] uppercase tracking-wider text-slate-500 font-bold mb-1">
                         Financial Yield
                       </h4>
                       <div className="flex justify-between">
@@ -368,17 +368,16 @@ export default function TechSizing() {
                       </div>
                       <div className="flex justify-between">
                         <span className="text-slate-500">Payback Period</span>
-                        <span className="text-yellow-400 font-semibold">
-                          {tech.paybackPeriod === 999 ? 'N/A' : `${tech.paybackPeriod.toFixed(1)} Years`}
+                        <span className="text-amber-500 font-semibold">
+                          {tech.paybackPeriod === 999 ? 'N/A' : `${tech.paybackPeriod.toFixed(1)} Yrs`}
                         </span>
                       </div>
                     </div>
                   </div>
 
-                  {/* Footnote warnings */}
                   {!tech.footprintFeasible && tech.isViable && (
-                    <div className="mt-3 bg-red-950/20 border border-red-900/30 rounded p-1.5 text-[9px] text-red-400 text-center">
-                      Required space exceeds available constraint.
+                    <div className="mt-3 bg-red-950/20 border border-red-900/30 rounded p-1 text-[9px] text-red-500 text-center font-mono">
+                      SPACE EXCEEDED BY {(tech.requiredFootprintSqm - footprintAvailable).toFixed(1)} sqm
                     </div>
                   )}
                 </div>
@@ -388,12 +387,12 @@ export default function TechSizing() {
           </div>
           
           {/* Engineering Metallurgy design standard details */}
-          <div className="bg-slate-950/40 border border-slate-800 rounded-lg p-4 text-xs space-y-2">
-            <h4 className="font-semibold text-slate-200">Algorithmic Sizing & Metallurgy Recommendation Matrix</h4>
-            <p className="text-slate-400 text-[11px] leading-relaxed">
-              Design calculations are fully automated and based on counter-flow heat exchanger thermodynamics where Q_dot = m_dot * Cp * delta_T. 
-              Metallurgy recommendations prevent acid dew-point corrosion under cooling cycles. Economizer tube designs employ 50.8 mm tubes, 
-              WHRB boilers use 63.5 mm high-pressure configurations, and ORC organic evaporators rely on 38.1 mm piping.
+          <div className="bg-[#121314] border border-[#303337] rounded p-4 text-[10px] space-y-1.5 font-mono-inst">
+            <h4 className="font-semibold text-slate-200 uppercase tracking-wider text-xs">P&ID Sizing & Metallurgy Recommendation Matrix</h4>
+            <p className="text-slate-400 leading-relaxed text-[11px]">
+              Primary calculation sets are derived using standard thermodynamics equations. 
+              Metallurgy recommendations are hardcoded at threshold limit intervals. Economizers employ 50.8 mm tubes, 
+              WHRB boilers use 63.5 mm boiler-grade lines, and ORC organic evaporators rely on 38.1 mm pressure vessels.
             </p>
           </div>
 
